@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <script type="text/javascript" src="//code.jquery.com/jquery-2.0.2.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<link rel="icon" type="image/png" href="http://i.imgur.com/Hf8P2hJ.png" />
+<link rel="apple-touch-icon" href="http://i.imgur.com/Hf8P2hJ.png">
+  <style type="text/css">
+  html {
+  height: 100%;
+}
+body {
+ 
+font-family: 'Lato', sans-serif;
+color:black;
+background-color:black;
+background: linear-gradient(to bottom, #03458f 0%,#03458f 9%,#000000 100%);
+background-repeat:repeat-x;
+background-position:left top;
+
+
+background-repeat:repeat-x;
+background-position:left top;
+
+
+  }
+  a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #111;
+}
+a:visited {
+  
+}
+a:hover, a:focus, a:active {
+
+  text-decoration: underline;
+  
+}
+    
+  </style>
+  <title>iTunes&#8594;RSS</title>
+ 
+<script type='text/javascript'>//<![CDATA[
+$(window).load(function(){
+$("form").submit(function (e) {
+    e.preventDefault();
+    var url = $("#artID").val();
+    getrss(url);
+});
+
+function getrss(url) {
+
+    $('#feedUrl, #artwork').html('');
+    var match = url.match(/id(\d+)/)
+    if (match) var artID = match[1];
+    else var artID = url.match(/\d+/); // 123456
+
+    $.ajax({
+        url: "https://itunes.apple.com/lookup",
+        data: {
+            id: parseInt(artID),
+            entity: "podcast"
+        },
+        type: "GET",
+        dataType: "jsonp",
+        success: function (data, dataType) {
+            console.log(data);
+            var results = data.results;
+            var feedUrl = results[0]['feedUrl'];
+            var imgurl = results[0]['artworkUrl100'];
+            $('<a target="_blank">').attr("href", feedUrl).text(feedUrl).appendTo($("#feedUrl"))
+            $(new Image()).attr('src', '' + imgurl).appendTo($('#artwork'));
+        }
+
+    })
+}
+});//]]> 
+
+</script>
+
+  
+</head>
+
+<body  >
+<center>
+<div style="width:800px;background-color:#FFFFFF;padding-top: 10px;padding-bottom: 10px;border-radius: 50px;">
+
+<img style="margin: 30px;" src="http://i.imgur.com/ry8tyO8.png">
+
+<br>
+
+<form action="" >
+<div style="background-color:#CCCCCC; font-size: 16px; border-radius: 10px; padding: 10px; width: 90%;" >
+	<h3>iTunes Store :</h3>
+    <input type="url" id="artID" name="artID" style="width:90%;font-size: 16px; margin: 10px;text-align: center; border: 1px solid #ccc; word-wrap: break-word;" value="https://itunes.apple.com/fr/podcast/linaudible-de-walter/id334609357?mt=2">
+</div>
+	<input type="submit"  style="margin: 15px; padding: 10px; border: 3px solid #ccc;  border-radius: 30px;   font-weight: bold; font-size: 16px; background:#FFFFFF;" value="iTunes &#8594; RSS">
+	
+</form>
+
+<div style="background-color:#CCCCCC; font-size: 16px; border-radius: 10px; padding: 10px; width: 90%;" >
+<h3>RSS :</h3>
+<div style="padding: 5px; background-color:#FFFFFF;width:90%; min-height: 18px; font-family: sans-serif; word-wrap: break-word;margin: 10px;" id="feedUrl"></div></div>
+<div id="artwork" style="margin: 15px;width: 103px;height: 103px;background: #CCC; "></div>
+<br>
+</div>
+<div style="color:#FFFFFF;margin: 15px;">
+	Powered by <a href="http://podshows.fr" style="color:#FFFFFF;">PodShows</a>
+	<div style="font-size: 9px; word-wrap: break-word;">Adapted from <a href="http://jsfiddle.net/onigetoc/2mb5C/" style="color:#FFFFFF;"> Onigetoc's JSfiddle </a> // This tool is not affiliated in any way with iTunes which is a brand of Apple Inc. <br/>
+	Cette page est autonome et librement copiable, n'hésitez pas à la <a href="http://podshows.fr/itunesrss.html" style="color:#FFFFFF;" download="iTunes-RSS">télécharger</a>, la modifier à votre guise et/ou l'héberger vous-même.</div>
+</div>
+</div>
+
+</center>
+</body>
+
+</html>
+
